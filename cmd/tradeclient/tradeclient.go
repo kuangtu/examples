@@ -34,6 +34,7 @@ import (
 type TradeClient struct {
 }
 
+//方法体为空
 //OnCreate implemented as part of Application interface
 func (e TradeClient) OnCreate(sessionID quickfix.SessionID) {}
 
@@ -87,10 +88,12 @@ func execute(cmd *cobra.Command, args []string) error {
 	switch argLen {
 	case 0:
 		{
+			//默认路径
 			cfgFileName = path.Join("config", "tradeclient.cfg")
 		}
 	case 1:
 		{
+			//配置文件
 			cfgFileName = args[0]
 		}
 	default:
@@ -105,6 +108,7 @@ func execute(cmd *cobra.Command, args []string) error {
 	}
 	defer cfg.Close()
 
+	//一次性读取
 	stringData, readErr := ioutil.ReadAll(cfg)
 	if readErr != nil {
 		return fmt.Errorf("Error reading cfg: %s,", readErr)
@@ -122,11 +126,14 @@ func execute(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("Error creating file log factory: %s,", err)
 	}
 
+	//发起连接、处理消息
 	initiator, err := quickfix.NewInitiator(app, quickfix.NewMemoryStoreFactory(), appSettings, fileLogFactory)
 	if err != nil {
 		return fmt.Errorf("Unable to create Initiator: %s\n", err)
 	}
+	fmt.Println("start initiator")
 
+	//启动连接
 	err = initiator.Start()
 	if err != nil {
 		return fmt.Errorf("Unable to start Initiator: %s\n", err)
@@ -136,6 +143,7 @@ func execute(cmd *cobra.Command, args []string) error {
 
 Loop:
 	for {
+		//发送订单
 		action, err := internal.QueryAction()
 		if err != nil {
 			break

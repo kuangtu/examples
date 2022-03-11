@@ -22,6 +22,7 @@ import (
 )
 
 func main() {
+	//执行了examples中的cmd
 	err := cmd.Execute()
 	if err != nil {
 		os.Exit(0)
