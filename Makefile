@@ -9,6 +9,7 @@ vet:
 	go vet ./...
 
 build: clean
+# 在windows环境中可以直接执行 go build
 	go build -v -o ./bin/qf
 
 clean:
