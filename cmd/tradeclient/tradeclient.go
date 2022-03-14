@@ -138,7 +138,7 @@ func execute(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("Unable to start Initiator: %s\n", err)
 	}
-
+	//打印FIX信息
 	printConfig(bytes.NewReader(stringData))
 
 Loop:
@@ -171,7 +171,7 @@ Loop:
 			fmt.Printf("%v\n", err)
 		}
 	}
-
+	//程序退出，调用了initiator
 	initiator.Stop()
 	return nil
 }
