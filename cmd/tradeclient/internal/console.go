@@ -107,7 +107,7 @@ func queryVersion() (string, error) {
 	fmt.Println("5) FIX.4.4")
 	fmt.Println("6) FIXT.1.1 (FIX.5.0)")
 	fmt.Print("BeginString: ")
-
+	//从标准输入读取输入数字
 	scanner := bufio.NewScanner(os.Stdin)
 	if !scanner.Scan() {
 		return "", scanner.Err()
@@ -596,6 +596,7 @@ func QueryMarketDataRequest() error {
 
 	var req quickfix.Messagable
 	switch beginString {
+	//生成查询消息
 	case quickfix.BeginStringFIX42:
 		req = queryMarketDataRequest42()
 
@@ -611,7 +612,7 @@ func QueryMarketDataRequest() error {
 	default:
 		return fmt.Errorf("No test for version %v", beginString)
 	}
-
+	//确认是否发送
 	if queryConfirm("Send MarketDataRequest") {
 		return quickfix.Send(req)
 	}

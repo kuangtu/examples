@@ -16,6 +16,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/quickfixgo/examples/cmd"
@@ -23,6 +24,7 @@ import (
 
 func main() {
 	//执行了examples中的cmd
+	fmt.Println("cmd execute")
 	err := cmd.Execute()
 	if err != nil {
 		os.Exit(0)
