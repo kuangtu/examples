@@ -298,11 +298,13 @@ func execute(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("Unable to create Acceptor: %s\n", err)
 	}
 
+	//启动应用
 	err = acceptor.Start()
 	if err != nil {
 		return fmt.Errorf("Unable to start Acceptor: %s\n", err)
 	}
 
+	//接收信号量，异常处理
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 	go func() {
@@ -311,6 +313,7 @@ func execute(cmd *cobra.Command, args []string) error {
 		os.Exit(0)
 	}()
 
+	//等待标准输入
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		scanner.Scan()

@@ -155,7 +155,7 @@ Loop:
 
 		case "2":
 			err = internal.QueryCancelOrder()
-
+		//市场数据请求消息
 		case "3":
 			err = internal.QueryMarketDataRequest()
 
