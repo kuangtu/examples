@@ -51,6 +51,7 @@ func newApplication() *Application {
 		MessageRouter: quickfix.NewMessageRouter(),
 		OrderMatcher:  internal.NewOrderMatcher(),
 	}
+	//APP针对不同
 	app.AddRoute(newordersingle.Route(app.onNewOrderSingle))
 	app.AddRoute(ordercancelrequest.Route(app.onOrderCancelRequest))
 	app.AddRoute(marketdatarequest.Route(app.onMarketDataRequest))
@@ -85,7 +86,9 @@ func (a *Application) FromApp(msg *quickfix.Message, sessionID quickfix.SessionI
 	return a.Route(msg, sessionID)
 }
 
+//获取消息后进行处理
 func (a *Application) onNewOrderSingle(msg newordersingle.NewOrderSingle, sessionID quickfix.SessionID) quickfix.MessageRejectError {
+
 	clOrdID, err := msg.GetClOrdID()
 	if err != nil {
 		return err
@@ -268,6 +271,7 @@ func execute(cmd *cobra.Command, args []string) error {
 		}
 	}
 
+	fmt.Println("the cfgFileName is:%s\n", cfgFileName)
 	cfg, err := os.Open(cfgFileName)
 	if err != nil {
 		return fmt.Errorf("Error opening %v, %v\n", cfgFileName, err)
@@ -282,21 +286,25 @@ func execute(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("Error reading cfg: %s,", err)
 	}
-
+	//创建日志
 	logFactory := quickfix.NewScreenLogFactory()
+	//创建APP
 	app := newApplication()
 
+	//初始化及创建app
 	printConfig(bytes.NewReader(stringData))
 	acceptor, err := quickfix.NewAcceptor(app, quickfix.NewMemoryStoreFactory(), appSettings, logFactory)
 	if err != nil {
 		return fmt.Errorf("Unable to create Acceptor: %s\n", err)
 	}
 
+	//启动应用
 	err = acceptor.Start()
 	if err != nil {
 		return fmt.Errorf("Unable to start Acceptor: %s\n", err)
 	}
 
+	//接收信号量，异常处理
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 	go func() {
@@ -305,6 +313,7 @@ func execute(cmd *cobra.Command, args []string) error {
 		os.Exit(0)
 	}()
 
+	//等待标准输入
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		scanner.Scan()

@@ -86,6 +86,7 @@ func queryFieldChoices(fieldName string, choices []string, values []string) stri
 	return values[choice-1]
 }
 
+//输入执行指令
 func QueryAction() (string, error) {
 	fmt.Println()
 	fmt.Println("1) Enter Order")

@@ -82,13 +82,14 @@ var (
 	}
 )
 
+//执行tradeclient命令
 func execute(cmd *cobra.Command, args []string) error {
 	var cfgFileName string
 	argLen := len(args)
 	switch argLen {
 	case 0:
 		{
-			//默认路径
+			//读取默认路径配置
 			cfgFileName = path.Join("config", "tradeclient.cfg")
 		}
 	case 1:
@@ -114,12 +115,14 @@ func execute(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("Error reading cfg: %s,", readErr)
 	}
 
+	//解析配置
 	appSettings, err := quickfix.ParseSettings(bytes.NewReader(stringData))
 	if err != nil {
 		return fmt.Errorf("Error reading cfg: %s,", err)
 	}
 
 	app := TradeClient{}
+	//fileLogFactory
 	fileLogFactory, err := quickfix.NewFileLogFactory(appSettings)
 
 	if err != nil {
@@ -155,7 +158,7 @@ Loop:
 
 		case "2":
 			err = internal.QueryCancelOrder()
-
+		//市场数据请求消息
 		case "3":
 			err = internal.QueryMarketDataRequest()
 

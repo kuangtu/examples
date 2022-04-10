@@ -57,6 +57,7 @@ type executor struct {
 	*quickfix.MessageRouter
 }
 
+//通过MessageRouter设置不同的处理
 func newExecutor() *executor {
 	e := &executor{MessageRouter: quickfix.NewMessageRouter()}
 	e.AddRoute(fix40nos.Route(e.OnFIX40NewOrderSingle))
@@ -500,6 +501,7 @@ var (
 	}
 )
 
+//执行过程
 func execute(cmd *cobra.Command, args []string) error {
 	var cfgFileName string
 	argLen := len(args)
@@ -517,6 +519,7 @@ func execute(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("Incorrect argument number")
 		}
 	}
+	//配置参数
 	cfg, err := os.Open(cfgFileName)
 	if err != nil {
 		return fmt.Errorf("Error opening %v, %v\n", cfgFileName, err)
