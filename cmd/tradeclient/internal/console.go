@@ -256,7 +256,7 @@ func queryHeader(h header) {
 
 func queryNewOrderSingle40() fix40nos.NewOrderSingle {
 	var ordType field.OrdTypeField
-	order := fix40nos.New(queryClOrdID(), field.NewHandlInst("1"), querySymbol(), querySide(), queryOrderQty(), queryOrdType(&ordType))
+	order := fix40nos.New(queryClOrdID(), field.NewHandlInst("1"), queryS ymbol(), querySide(), queryOrderQty(), queryOrdType(&ordType))
 
 	switch ordType.Value() {
 	case enum.OrdType_LIMIT, enum.OrdType_STOP_LIMIT:
