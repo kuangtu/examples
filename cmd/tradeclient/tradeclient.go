@@ -161,7 +161,6 @@ Loop:
 		//市场数据请求消息
 		case "3":
 			err = internal.QueryMarketDataRequest()
-
 		case "4":
 			//quit
 			break Loop
